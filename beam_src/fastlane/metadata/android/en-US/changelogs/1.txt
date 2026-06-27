@@ -1,0 +1,7 @@
+First Beam release.
+• Configurable status-bar indicator (W, A, Ah, V, Wh, °C, %)
+• Detailed in-app battery breakdown including plug type and charging timeline
+• Material You, custom seed colour, and OLED-black themes
+• Frosted-glass card design with optional hero glow and haptics
+• Workarounds for devices reporting µA, inverted current, or odd polling cadence
+• Open source with donation addresses in the in-app About section

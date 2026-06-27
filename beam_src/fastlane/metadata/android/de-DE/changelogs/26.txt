@@ -1,0 +1,4 @@
+• App-Infoseite hinzugefügt
+• Neue Schriftartauswahl hinzugefügt
+• Sprachoption in den Einstellungen hinzugefügt
+• Layout-Verbesserungen
