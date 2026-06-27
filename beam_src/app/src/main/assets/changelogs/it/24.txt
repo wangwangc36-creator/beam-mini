@@ -1,5 +1,0 @@
-1.2
-• Aggiunta nuova opzione "Mantieni schermo acceso"
-• Aggiunta opzione font monospace
-• Corretta la richiesta di autorizzazione per le notifiche
-• Corretto l'interruttore del feedback aptico che non funzionava per tutti gli effetti

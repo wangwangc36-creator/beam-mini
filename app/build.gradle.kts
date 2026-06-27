@@ -1,4 +1,5 @@
 import com.android.build.api.dsl.ApplicationExtension
+import java.util.Properties
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -12,14 +13,14 @@ configure<ApplicationExtension> {
 
     defaultConfig {
         applicationId = "montafra.beam"
-        minSdk = 28
+        minSdk = 28 // BatteryManager.computeChargeTimeRemaining()
         targetSdk = 36
         versionCode = 30
         versionName = "1.8"
     }
 
     androidResources {
-        localeFilters.addAll(listOf("en", "es", "it", "de", "fr", "uk", "cs", "pl", "pt", "ru", "zh-rCN"))
+        localeFilters.addAll(listOf("en", "es", "it", "de", "fr", "uk", "cs", "pl", "pt", "ru"))
     }
 
     buildFeatures {

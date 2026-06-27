@@ -1,4 +1,0 @@
-• Neue Option „Bildschirm aktiv halten"
-• Option für Monospace-Schriftart
-• Berechtigungsabfrage für Benachrichtigungen behoben
-• Haptik-Schalter, der nicht für alle Effekte funktionierte, behoben

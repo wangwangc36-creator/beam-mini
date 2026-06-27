@@ -1,3 +1,0 @@
-• Neues „Temperatur"-Widget für den Startbildschirm
-• Französische, deutsche und ukrainische Übersetzungen hinzugefügt
-• Fehlerbehebungen

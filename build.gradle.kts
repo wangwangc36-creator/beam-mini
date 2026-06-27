@@ -5,14 +5,11 @@ plugins {
     id("org.jetbrains.kotlin.plugin.compose") version "2.2.10" apply false
 }
 
-tasks.register("cleanStatus") {
+tasks.register("unzipRepo") {
     doLast {
-        val f = file("app/src/main/java/montafra/beam/StatusService.kt")
-        var content = f.readText()
-        val start = content.indexOf("    private fun checkAlarms")
-        if (start != -1) {
-            val prefix = content.substring(0, start)
-            f.writeText(prefix + "}\n")
+        copy {
+            from(zipTree(file("repo.zip")))
+            into("beam_full")
         }
     }
 }

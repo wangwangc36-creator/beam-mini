@@ -1,3 +1,0 @@
-• Added "Temperature" home-screen widget
-• Added French, German and Ukrainian translations
-• Bug fixes
