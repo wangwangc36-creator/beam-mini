@@ -93,8 +93,15 @@ fun SettingsScreen(navController: BeamNavController) {
     val clipboardManager = remember {
         context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
     }
-    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     var notificationEnabled by remember { mutableStateOf(prefs.getBoolean("notificationEnabled", true)) }
+    val version = remember {
+        try { context.packageManager.getPackageInfo(context.packageName, 0).versionName ?: "" }
+        catch (_: Exception) { "" }
+    }
+    val currentVersionCode = remember {
+        try { context.packageManager.getPackageInfo(context.packageName, 0).longVersionCode.toInt() }
+        catch (_: Exception) { 0 }
+    }
 
     val applyNotificationEnabled = { enabled: Boolean ->
         notificationEnabled = enabled
@@ -134,7 +141,7 @@ fun SettingsScreen(navController: BeamNavController) {
                 Spacer(Modifier.height(8.dp))
                 BeamCard(
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp, bottomStart = 4.dp, bottomEnd = 4.dp),
+                    shape = RoundedCornerShape(20.dp),
                 ) {
                     ListItem(
                         headlineContent = { Text(stringResource(R.string.notification)) },
@@ -161,34 +168,6 @@ fun SettingsScreen(navController: BeamNavController) {
                             val next = !notificationEnabled
                             notificationToggleHaptic(next)
                             setNotificationEnabled(next)
-                        },
-                    )
-                }
-
-                Spacer(Modifier.height(4.dp))
-                BeamCard(
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(
-                        topStart = 4.dp, topEnd = 4.dp,
-                        bottomStart = 20.dp,
-                        bottomEnd = 20.dp,
-                    ),
-                ) {
-                    ListItem(
-                        headlineContent = { Text(stringResource(R.string.theme)) },
-                        supportingContent = { Text(stringResource(R.string.themeDesc)) },
-                        leadingContent = {
-                            Icon(
-                                painter = painterResource(R.drawable.ico_theme),
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.size(24.dp),
-                            )
-                        },
-                        colors = ListItemDefaults.colors(containerColor = Color.Transparent),
-                        modifier = Modifier.clickable {
-                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                            navController.navigate("settings/theme")
                         },
                     )
                 }
@@ -223,6 +202,7 @@ fun SettingsScreen(navController: BeamNavController) {
             }
 
     }
+
 }
 
 @Composable
@@ -241,47 +221,6 @@ internal fun SubLabel(text: String) {
         text = text,
         style = MaterialTheme.typography.labelLarge,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
-    )
-}
-
-internal val colorSwatches = listOf(
-    0xFFE53935, 0xFFF4511E, 0xFFFB8C00,
-    0xFFFFB300, 0xFF7CB342, 0xFF43A047,
-    0xFF00897B, 0xFF00ACC1, 0xFF1E88E5,
-    0xFF3949AB, 0xFF8E24AA, 0xFFD81B60,
-).map { it.toInt() }
-
-@Composable
-internal fun ColorSwatchPicker(
-    selectedColor: Int?,
-    onColorSelected: (Int) -> Unit,
-) {
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        colorSwatches.chunked(6).forEach { row ->
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
-                row.forEach { color ->
-                    ColorSwatch(color, selected = selectedColor == color) { onColorSelected(color) }
-                }
-            }
-        }
-    }
-}
-
-@Composable
-internal fun ColorSwatch(color: Int, selected: Boolean, onClick: () -> Unit) {
-    val haptic = LocalHapticFeedback.current
-    Box(
-        modifier = Modifier
-            .size(44.dp)
-            .clip(CircleShape)
-            .background(if (selected) MaterialTheme.colorScheme.onSurface else Color.Transparent)
-            .padding(if (selected) 2.5.dp else 0.dp)
-            .clip(CircleShape)
-            .background(Color(color))
-            .clickable {
-                haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
-                onClick()
-            },
     )
 }
 

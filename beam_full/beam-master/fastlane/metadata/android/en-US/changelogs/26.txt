@@ -1,0 +1,4 @@
+• Added app info page
+• Added new font picker
+• Added language option in settings
+• Layout improvements

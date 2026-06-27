@@ -23,11 +23,6 @@ class StatusService : Service() {
         private val dateFmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
     }
 
-    private class AlarmRuntime {
-        var fired = false
-        var lastMs = 0L
-    }
-
     private lateinit var battery: Battery
     private var iconBitmap: Bitmap? = null
     private val iconPaint = Paint().apply {
@@ -68,7 +63,6 @@ class StatusService : Service() {
                     update()
                 }
                 Intent.ACTION_BATTERY_CHANGED -> {
-                    snapshot = battery.snapshot()
                 }
                 Intent.ACTION_POWER_CONNECTED -> {
                     pluggedInAt = ZonedDateTime.now()
@@ -362,4 +356,5 @@ class StatusService : Service() {
         if (notificationEnabled) noteMgr.notify(noteId, buildNotification())
         updateData()
     }
+
 }

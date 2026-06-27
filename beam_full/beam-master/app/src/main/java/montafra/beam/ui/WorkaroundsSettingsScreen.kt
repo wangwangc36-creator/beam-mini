@@ -67,6 +67,20 @@ fun WorkaroundsSettingsScreen(navController: BeamNavController, vm: BatteryViewM
     val haptic = LocalHapticFeedback.current
     val prefs = remember { context.getSharedPreferences(settingsName, Context.MODE_PRIVATE) }
 
+    // Refreshed on resume so the warning clears when the user returns from the
+    // system settings page they just fixed.
+    var backgroundRestricted by remember { mutableStateOf(false) }
+    val lifecycleOwner = LocalLifecycleOwner.current
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                val am = context.getSystemService(ActivityManager::class.java)
+                backgroundRestricted = am?.isBackgroundRestricted == true
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
+    }
 
     val pollIntervals = listOf(1_250L, 1_750L, 2_500L, 3_500L, 5_000L, 7_500L, 10_000L)
     val pollLabels = listOf("1.25s", "1.75s", "2.5s", "3.5s", "5s", "7.5s", "10s")
@@ -257,6 +271,61 @@ fun WorkaroundsSettingsScreen(navController: BeamNavController, vm: BatteryViewM
                                         )
                                     )
                                 }
+                            }
+                        },
+                    )
+                }
+            }
+            if (VendorBatteryHints.current != null) item {
+                BeamCard(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(20.dp),
+                ) {
+                    ListItem(
+                        headlineContent = { Text(stringResource(R.string.vendorBatteryTitle)) },
+                        supportingContent = {
+                            if (backgroundRestricted) {
+                                Text(
+                                    text = stringResource(R.string.vendorBatteryRestricted),
+                                    color = MaterialTheme.colorScheme.error,
+                                )
+                            } else {
+                                Text(stringResource(R.string.vendorBatteryDesc))
+                            }
+                        },
+                        trailingContent = {
+                            Icon(
+                                painter = painterResource(R.drawable.ico_open_in_new),
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier.size(24.dp),
+                            )
+                        },
+                        colors = ListItemDefaults.colors(containerColor = Color.Transparent),
+                        modifier = Modifier.clickable {
+                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                            VendorBatteryHints.openVendorSettings(context)
+                        },
+                    )
+                    HorizontalDivider(Modifier.padding(horizontal = 16.dp))
+                    ListItem(
+                        headlineContent = { Text(stringResource(R.string.learnMore)) },
+                        trailingContent = {
+                            Icon(
+                                painter = painterResource(R.drawable.ico_open_in_new),
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier.size(24.dp),
+                            )
+                        },
+                        colors = ListItemDefaults.colors(containerColor = Color.Transparent),
+                        modifier = Modifier.clickable {
+                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                            try {
+                                context.startActivity(
+                                    Intent(Intent.ACTION_VIEW, Uri.parse(VendorBatteryHints.dontKillUrl()))
+                                )
+                            } catch (_: Exception) {
                             }
                         },
                     )

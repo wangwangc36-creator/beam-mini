@@ -25,7 +25,6 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import montafra.beam.ui.MainScreen
 import montafra.beam.ui.PredictiveNavHost
 import montafra.beam.ui.SettingsScreen
-import montafra.beam.ui.ThemeSettingsScreen
 import montafra.beam.ui.WorkaroundsSettingsScreen
 import montafra.beam.ui.rememberBeamNavController
 import montafra.beam.ui.theme.BeamTheme
@@ -145,7 +144,6 @@ class MainActivity : ComponentActivity() {
                     when (route) {
                         "main" -> MainScreen(navController)
                         "settings" -> SettingsScreen(navController)
-                        "settings/theme" -> ThemeSettingsScreen(navController)
                         "settings/workarounds" -> WorkaroundsSettingsScreen(navController)
                     }
                 }

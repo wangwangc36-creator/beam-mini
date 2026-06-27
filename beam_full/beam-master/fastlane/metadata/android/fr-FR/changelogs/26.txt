@@ -1,0 +1,4 @@
+• Ajout d'une page d'informations sur l'application
+• Ajout d'un nouveau sélecteur de police
+• Ajout de l'option de langue dans les paramètres
+• Améliorations de la mise en page

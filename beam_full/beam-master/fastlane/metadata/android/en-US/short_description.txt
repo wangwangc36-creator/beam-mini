@@ -1,0 +1,1 @@
+Live battery metrics pinned to your status bar

@@ -176,7 +176,8 @@ fun MainScreen(navController: BeamNavController, vm: BatteryViewModel = viewMode
         if (currentVersionCode > lastSeen) {
             prefs.edit().putInt("lastSeenVersionCode", currentVersionCode).apply()
         }
-        
+        // Skipped when the changelog sheet shows to avoid stacking; the seen flag
+        // stays false so the hint appears on the next launch instead.
         if (VendorBatteryHints.current?.promptOnFirstLaunch == true &&
             !prefs.getBoolean("vendorBatteryHintSeen", false)
         ) {
